@@ -17,20 +17,22 @@ const cubeMesh = new THREE.Mesh(
 scene.add(cubeMesh)
 
 // initialize the camera
-// const camera = new THREE.PerspectiveCamera(
-//   75,
-//   window.innerWidth / window.innerHeight,
-//   0.1,
-//   200)
-
-const camera = new THREE.OrthographicCamera(
-  -1,
-  1,
-  1,
-  -1,
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
   0.1,
-  200
-);
+  200)
+
+// const aspectRatio = window.innerWidth / window.innerHeight;
+
+// const camera = new THREE.OrthographicCamera(
+//   -1 * aspectRatio,
+//   1 * aspectRatio,
+//   1,
+//   -1,
+//   0.1,
+//   200
+// );
 camera.position.z = 5;
 
 // initialize the renderer
@@ -46,7 +48,14 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.autoRotate = true;
 
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight; //this is important to scale element on canvas and canvas itself
+  camera.updateProjectionMatrix();//this is important to scale element on canvas and canvas itself
+  renderer.setSize(window.innerWidth, window.innerHeight);
+})
+
 const renderLoop = () => {
+
   controls.update();
   renderer.render(scene, camera);
   window.requestAnimationFrame(renderLoop);
